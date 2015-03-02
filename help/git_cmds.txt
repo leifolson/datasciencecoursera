@@ -1,0 +1,10 @@
+git add .       // adds all new files
+git add -u      // updates tracking
+git add -A      // does both above
+
+git commit -m "message"     // commit changes
+git push                    // push changes
+git checkout -b branchname  // creates new branch for independent changes
+git branch                  // see current branch
+git checkout master         // goes back to master branch
+
