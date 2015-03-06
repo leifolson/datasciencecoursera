@@ -1,0 +1,31 @@
+Week 1
+    - Make sure to have scripts for the data processing pipeline
+    - These scripts should have a clear flow of how the raw data was processed into the tidy format
+    - Create a code book that describes the variables, their types, etc.
+    - Make sure to explain the experimental design as well
+    - Downloading data
+        - make sure to keep track of download dates
+    - Extracting XML
+        - <section>     // start tag
+        - </section>    // end tag
+        - <line-break/> // empty tag
+        - use Library(XML)
+
+    - Xpath...another format...look up reference
+    
+    - Reading JSON
+        - library(jsonlite) 
+        - can use toJSON() function to convert data to JSON
+        - can use fromJSON() to get data frame from JSON
+
+    - data.table  USE THESE!!  =)
+        - generally faster than data.frame
+        - written in C
+        - its actually pretty cool
+        - better for large objects
+        - does not copy objects...just references
+        - can set keys as well
+        - makes merging much faster!
+
+     
+
