@@ -1,0 +1,80 @@
+Week 1
+    - Make sure to have scripts for the data processing pipeline
+    - These scripts should have a clear flow of how the raw data was processed into the tidy format
+    - Create a code book that describes the variables, their types, etc.
+    - Make sure to explain the experimental design as well
+    - Downloading data
+        - make sure to keep track of download dates
+    - Extracting XML
+        - <section>     // start tag
+        - </section>    // end tag
+        - <line-break/> // empty tag
+        - use Library(XML)
+
+    - Xpath...another format...look up reference
+    
+    - Reading JSON
+        - library(jsonlite) 
+        - can use toJSON() function to convert data to JSON
+        - can use fromJSON() to get data frame from JSON
+
+    - data.table  USE THESE!!  =)
+        - generally faster than data.frame
+        - written in C
+        - its actually pretty cool
+        - better for large objects
+        - does not copy objects...just references
+        - can set keys as well
+        - makes merging much faster!
+
+Week 2
+    - Reading MySQL
+        - make sure to have mySQL installed
+        - for mac use install.packages("RMySQL")
+        - connect: dbConnect()
+        - query: dbGetQuery()
+        - disc: dbDisconnect()              // remember to close the connection!!!
+        - tables: dbListTables(connObj)
+        - list fields: dbListFields()
+        - get data: dbReadTable()
+        - get subset of data: dbSendQuery(), use fetch() to get the query data
+        - clear query: dbClearResult(query)
+
+    - Reading HDF5
+        - used for storing large data sets
+        - heirarchical data set
+        - source("http://bioconductor.org/biocLite.R")
+        - biocLite("rhdf5")
+        - create file: h5createFile()
+        - h5createGroup() 
+        - can write into specific groups etc
+        - h5write() to write data to file
+        - h5ls() lists the stuff in the file
+        - h5read() to read the data from a file
+        - easy to read/write in chunks...very useful!
+        - see nice tutorial on bioconductor
+
+    - Reading from the Web
+        - Webscraping: programatically extract data from the HTML code of websites
+            - but be careful...can get IP blocked if website is against this kind of thing
+        - readLines(conn) reads info from connection object
+        - make sure to close these connections
+        - can use XML package to parse the raw html into something nicer
+        - can also use the httr package in R to make GET requests
+        - httr package allows you to authenticate yourself with websites
+        - use handles to avoid having to authenticate each access
+                  
+    - Reading from APIs
+        - often you will have to create an api dev account with places like Twitter etc
+        - use httr package
+        - oauth_app()  begins auth process for your application
+        - sign_oauth1.0()   signs in so that data can be accessed
+        - good tutorial on github
+
+    - Other sources
+        - foreign package useful for many other data storage formats
+        - check out EBImage for image manipulation
+
+
+     
+
