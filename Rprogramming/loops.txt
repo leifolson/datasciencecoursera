@@ -1,0 +1,21 @@
+lapply: loop over a list
+sapply: same as lapply but try to simplify the result 
+apply: operates over margins of array
+tapply: applies over a table
+mapply: multivariate version of lapply
+
+split: can be useful in conjunction with apply functions
+
+
+can pass in other args for the functions I put in lapply!
+
+myth: apply is faster than a for loop
+these days this is no longer true
+
+if you want to compute sums/means of a rows/cols in a matrix use
+rowSums / rowMeans
+colSums / colMeans
+
+instead of apply.  these have been optimzied for their operation
+
+when working with a 3D array, can pass in c(1,2) to collapse the third dimension
