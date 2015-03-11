@@ -1,0 +1,3 @@
+-- just a few tips as I go through this course --
+
+- can use read.fwf to read fixed width files and specify fields widths...pretty convenient!
