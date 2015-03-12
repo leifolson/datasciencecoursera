@@ -19,3 +19,11 @@ colSums / colMeans
 instead of apply.  these have been optimzied for their operation
 
 when working with a 3D array, can pass in c(1,2) to collapse the third dimension
+
+mapply is used to apply a function to multiple sets of arguments
+
+split is a nice thing to use to split up a table by a particular variable
+splits according to the levels of a factor
+
+interaction: combines two different levels together
+

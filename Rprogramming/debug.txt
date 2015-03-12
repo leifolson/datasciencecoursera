@@ -1,0 +1,11 @@
+-- debugging tools --
+
+invisible(x): makes the return value invisible...i.e., it doesn't get printed
+
+traceback:  prints out function call stack
+debug:      flags a function for debugging...lets me step through it
+browser:    suspends the execution wherever it is called and puts function in debug mode
+trace:      allows you to insert debugging code into a function at specific places
+recover:    allows you to modify the error behavior so that you can look at the call stack
+
+
