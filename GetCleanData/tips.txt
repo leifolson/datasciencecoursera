@@ -1,3 +1,49 @@
 -- just a few tips as I go through this course --
 
 - can use read.fwf to read fixed width files and specify fields widths...pretty convenient!
+
+- Subsetting / Sorting
+    - can use logicals: X[(X$var1 <= 3 & X$var3 >= 0),]
+    - which(): returns indices that meet a logical condition
+    - order(): sorts rows by some specified variable
+    - arrange(): also does sorting on a data frame, part of the plyr package
+
+- Summarizing data
+    - quantile() gives standard quantiles
+    - can give args to get specific ones
+    - table() is convenient for looking at categories
+    - xtabs()  makes a cross-table
+    - ftable() flattens out the result
+    
+- Create new variables
+    - seq() creates a sequence of values...seems like linspace()
+    - cut() quantizes a continuous variable
+    - Hmisc package has cut2() that does this a bit easier
+    - mutate() from plyr...mutates a data frame to add a new variable in place of another
+
+- Reshaping Data
+    - tidy data: one var to a col, one obs in each row, etc
+    - melt(): tell what is an ID var and which are measure vars (makes tall/skinny)
+    - dcast(data, rowvar ~ colvars): recast data set into a particular shape
+    - ddply(): does split, apply, combine all in one step
+    - plyr library is really nice to use
+    
+- Data Frames and dplyr     **** these are really nice to use ****
+    - optimized version of plyr
+    - select: return subset of cols
+    - filter: extract subset of rows
+    - arrange: reorder rows of data frame
+    - rename: rename variables in data frame
+    - mutate: add new vars/cols or xform existing vars
+    - summarize: summary stats of data frame
+    - groupby: split data frame on a particular categorical variable
+    - %>%  pipeline operator...pipes output to input of something else
+    - can also work with data tables, sql etc
+    
+- Merging data
+    - merge(): provide two data frames and col names to merge on
+    - defaults to merge on common var names
+    - join(): does similar stuff....faster..but less features
+    - join_all(): joins multiple data frames in a list
+
+ 
