@@ -3,6 +3,7 @@ sapply: same as lapply but try to simplify the result
 apply: operates over margins of array
 tapply: applies over a table
 mapply: multivariate version of lapply
+vapply: type checked lapply...have to specify expected type
 
 split: can be useful in conjunction with apply functions
 
