@@ -1,0 +1,12 @@
+# some notes on the R profiler
+
+- helps to determine code bottlenecks
+- system.time() give back the time it takes for an expression to run
+
+- Rprof(): starts profiler
+- summaryRprof(): summarizes profiler output that is more readable
+- do not use system.time() and Rprof() together
+- not very useful if the program runs very quickly
+- by.total normalizes by total run time
+- by.self normalizes by total but subs out functions higher in the call stack
+
