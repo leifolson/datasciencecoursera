@@ -71,11 +71,20 @@ colnames(dataset) = sub("^f", "FFT ", colnames(dataset))
 colnames(dataset) = sub("-mean\\(\\)", "Mean", colnames(dataset))
 colnames(dataset) = sub("-std\\(\\)", "Std", colnames(dataset))
 
-print("tidy dataset complete, see \"dataset\" dataframe")
+cat("tidy dataset complete, see \"dataset\" dataframe\n")
         
 print("computing mean for each variable by subject and activity...")
 dataset.means = aggregate(.~ subject + activity, data = dataset, mean)
 
 # order by subject
 dataset.means = dataset.means[order(dataset.means$subject),]
+colnames(dataset.means)[3:ncol(dataset.means)] = paste("Mean:", colnames(dataset.means)[3:ncol(dataset.means)], sep = " ")
+
+cat("new tidy dataset complete, see \"dataset.means\" data frame\n")
+
+
+
+
+
+
 
