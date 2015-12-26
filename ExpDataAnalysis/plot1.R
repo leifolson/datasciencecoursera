@@ -1,5 +1,3 @@
-library("ggplot2")
-
 if(!exists("NEI")){
   NEI <- readRDS("summarySCC_PM25.rds")
 }
@@ -10,6 +8,7 @@ if(!exists("SCC")){
 
 # aggregate emissions data by year
 sumByYear <- aggregate(NEI$Emissions, by = list(NEI$year), FUN = sum)
+colnames(sumByYear) <- c("year", "emissions")
 
 # save to png
 png(filename = "plot1.png", height = 480, width = 480)
@@ -18,7 +17,7 @@ png(filename = "plot1.png", height = 480, width = 480)
 plot(sumByYear, xlab="Year", ylab=expression('Emissions PM'[2.5]), main="Emissions by Year")
 
 # add a regression line
-abline(lm(x ~ Group.1, data = sumByYear), col = 'red')
+abline(lm(emissions ~ year, data = sumByYear), col = 'red')
 
 dev.off()
 
