@@ -5,12 +5,22 @@ date: "January 20, 2016"
 output: html_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This is an R Markdown document for Project 1 of the Coursera Reproducible Research course.  The purpose of this initial project is to gain experience with literate programming methods to produce a report that explores the activity monitoring data set obtained from the following link: https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### Loading the data set
+
+First, we load the data by reading directly from the csv file obtained from the link mentioned above.
 
 ```{r}
-summary(cars)
+activityData <- read.csv("../data/activity.csv", header = TRUE)
+```
+
+At the present moment, the data will not be transformed or altered in any way.
+
+### Mean steps per day
+
+```{r, echo = TRUE}
+aggregate(steps ~ date, data = activityData, mean)
 ```
 
 You can also embed plots, for example:
