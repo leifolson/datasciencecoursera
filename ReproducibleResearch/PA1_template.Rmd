@@ -1,9 +1,6 @@
----
-title: "Course Project 1"
-author: "Clinton Olson"
-date: "January 20, 2016"
-output: html_document
----
+#Course Project 1
+###_author: Clinton Olson_
+###_date: January 20, 2016_
 
 This is an R Markdown document for Project 1 of the Coursera Reproducible Research course.  The purpose of this initial project is to gain experience with literate programming methods to produce a report that explores the activity monitoring data set obtained from the following link: https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip.
 
@@ -19,14 +16,94 @@ At the present moment, the data will not be transformed or altered in any way.
 
 ### Mean steps per day
 
-```{r, echo = TRUE}
-aggregate(steps ~ date, data = activityData, mean)
+In this section we examine the number of steps taken per day.
+
+First, lets get the steps by day and display the result:
+
+```{r}
+stepsPerDay <- aggregate(steps ~ date, data = activityData, sum)
+print(stepsPerDay)
 ```
 
-You can also embed plots, for example:
+Now, lets take a look at the histogram of steps per day by date:
 
-```{r, echo=FALSE}
-plot(cars)
+```{r}
+require(ggplot2)
+ggplot(stepsPerDay, aes(steps)) + 
+  geom_histogram(bins = 15) + 
+  ggtitle("Histogram of Total Steps Taken per Day") + 
+  labs(x="Total Steps", y = "Number of days with total count")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Now we can look at the mean and median values for steps per day:
+
+```{r}
+mean(stepsPerDay$steps, na.rm = TRUE)
+
+median(stepsPerDay$steps, na.rm = TRUE)
+```
+From the above, we can see that when removing NA values, we see a mean and median steps per day of 10766.19 and 10765 respectively
+
+### Average daily activity pattern
+
+In this section we take a look at the average daily activity pattern for the individual in this dataset.
+
+Let's look at a time series plot:
+
+```{r}
+meanStepsPerInterval <- aggregate(steps ~ interval, data = activityData, FUN = mean)
+ggplot(meanStepsPerInterval, aes(x = interval, y = steps)) +
+  geom_line() + ggtitle("Mean steps for each 5-minute time interval in a day") + 
+  labs(x = "Beginning of 5-min interval", y = "Mean steps per interval")
+```
+
+Upon examination, it would appear that the maximum mean number of steps are taken around the 820th 5-min time interval at just over 200 steps.  
+
+Lets find out exactly which interval it is:
+
+```{r}
+meanStepsPerInterval[which.max(meanStepsPerInterval$steps), ]
+```
+From this we can see that the maximum mean number of steps taken for any 5-min interval in the day are 206.1698 on time interval 835.
+
+### Imputing missing values
+
+In the previous steps we removed missing values from our calculations.  Now we will impute the missing values with what we hope are a reasonable substitution.
+
+Let's first see how many missing values we have:
+
+```{r}
+sum(is.na(activityData$steps))
+```
+
+Okay, so there are 2304 missing values that we need to fill in.  The strategy we will take here is to fill in missing values with the mean value for the time interval in question.  This is simple, but probably not the most accurate way of imputing the values.  We might instead prefer drawing from a distribution of some kind.  However, this will do for now.
+
+```{r}
+# copy the dataset and impute the missing values
+actDataImputed <- activityData
+for(i in 1:nrow(actDataImputed))
+{
+  if(is.na(actDataImputed$steps[i]))
+  {
+    actDataImputed$steps[i] = meanStepsPerInterval[meanStepsPerInterval$interval == actDataImputed$interval[i], c("steps")]
+  }
+}
+
+# now lets make a histogram and find the mean/median values with the new imputed dataset
+stepsPerDayImputed <- aggregate(steps ~ date, data = actDataImputed, sum)
+ggplot(stepsPerDayImputed, aes(steps)) + 
+  geom_histogram(bins = 15) + 
+  ggtitle("Histogram of Total Steps Taken per Day w/ Imputed values") + 
+  labs(x="Total Steps", y = "Number of days with total count")
+
+
+mean(stepsPerDayImputed$steps)
+median(stepsPerDayImputed$steps)
+```
+
+So it would appear that imputing the missing values only marginally changes the median value and leaves the mean unchanged.  The histogram is also very similar in its appearance, with the number of days with the total step counts has increased for each bin, but the overall shape looks rather unchanged.
+
+
+
+
+
