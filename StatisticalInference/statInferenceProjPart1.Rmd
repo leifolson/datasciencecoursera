@@ -27,6 +27,7 @@ and package them into a matrix that is 1000 X 40, where each row will represent 
 from the exponential distribution.
 
 ```{r}
+set.seed(1)
 exponentials <- matrix(rexp(40000, rate = .2), nrow = 1000, ncol = 40)
 ```
 
@@ -73,34 +74,11 @@ for increasing numbers of simulations.
 
 ##Variance: Sample vs. Theoretical
 We can perform the same comparisons for the variance in the data as well.  The theoretical variance of
-the exponential is 1 / lambda^2, so we should expect to see a convergence around the value of 25.
+the exponential is 1 / lambda^2, so we should expect to see a convergence around the value of 0.625
+ since the variance of our mean estimate will be (1/lambda^2) / n.
 
 ```{r}
-variances <- apply(exponentials, 1, var)
-c(mean(variances[1:100]), mean(variances[1:200]), mean(variances[1:500]), mean(variances))
-```
-
-We can see that the mean of the averages converges to the theoretical value of 5 with increasing
-numbers of simulations.  Lets look at the plots as well.
-
-```{r, echo = FALSE}
-p1 <- ggplot() + geom_histogram(aes(variances[1:100]), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 100 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-p2 <- ggplot() + geom_histogram(aes(variances[1:200]), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 200 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-p3 <- ggplot() + geom_histogram(aes(variances[1:500]), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 500 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-p4 <- ggplot() + geom_histogram(aes(variances), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 1000 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
+c(var(means[1:100]), var(means[1:200]), var(means[1:500]), var(means))
 ```
 
 Again, we can see that the distributions become more centered around the true value of the variance
@@ -138,23 +116,3 @@ p4 <- ggplot() + geom_histogram(aes(means), bins = 40) +
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
 
-```{r, eval = FALSE}
-# plots for variance distributions
-p1 <- ggplot() + geom_histogram(aes(variances[1:100]), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 100 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-p2 <- ggplot() + geom_histogram(aes(variances[1:200]), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 200 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-p3 <- ggplot() + geom_histogram(aes(variances[1:500]), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 500 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-p4 <- ggplot() + geom_histogram(aes(variances), bins = 40) + 
-    labs(x = "var", y = "count", title = "Distribution of 1000 variances") + 
-    geom_vline(xintercept=25, col='red')
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
-```

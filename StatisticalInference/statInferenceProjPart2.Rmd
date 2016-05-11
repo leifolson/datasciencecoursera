@@ -1,0 +1,131 @@
+---
+title: "An Analysis of the Effect of Vitamin C on Tooth Growth in Guinea Pigs"
+author: "Clinton Olson"
+date: "May 8, 2016"
+output: pdf_document
+---
+
+```{r setup, echo = FALSE}
+library(knitr)
+library(ggplot2)
+library(gridExtra)
+data("ToothGrowth")
+```
+
+#Overview
+This analysis examines the effect of vitamin C dosage and delievery method on the length of odontoblast
+cells in 60 guinea pigs from the ToothGrowth dataset supplied by R.  Here we examined the effect of 
+increasing dosages of vitamin C on cell length and found that larger dosages (up to 2.0 mg/day) 
+correspond with significantly greater mean cell length.  We also examined the effect of delivery method
+(orange juice vs. ascorbic acid) on mean cell length and found a significantly greater mean length
+for guinea pigs receiving vitamin C via orange juice.
+
+#Data Summary
+The data for this analysis comes from the ToothGrowth dataset preloaded into R.  There are 60 
+observations in this data where each observation includes the vitamin C dosage, 
+delivery method (one of orange juice (OJ) or ascorbic acid (VC)), and the length of the odontoblast cells
+responsible for tooth growth in guinea pigs.  Each animal received a particular dosage (0.5, 1, or 2 mg/day)
+of vitamin C through one of the two specified delivery methods.  At the end of the period their
+ondontoblast cell lengths were observed and recorded.
+
+The data is formatted as follows:
+
+```{r}
+head(ToothGrowth)
+```
+
+#Analysis
+##Data Exploration
+
+We begin our analysis with a quick look at the data.  First, we look at the mean length of the 
+cells by delivery method.
+
+```{r}
+aggregate(len ~ supp, data = ToothGrowth, FUN = mean)
+```
+
+It appears that delivering the vitamin C dosages via OJ may correspond with greater cell length independent
+of dosage level.  
+
+Lets also look at mean cell length by dose, regardless of delivery method.
+
+```{r}
+aggregate(len ~ dose, data = ToothGrowth, FUN = mean)
+```
+
+It also appears that increasing the dosage of vitamin C may lead to longer cells as well.
+
+Finally, we look at mean cell length by both delivery method and dosage.
+
+```{r}
+aggregate(len ~ ., data = ToothGrowth, FUN = mean)
+```
+
+Somewhat confirming our suspicions above, it looks like OJ may lead to longer cells than VC and increasing
+dosage levels of vitamin C may also lead to longer cells.  Of note is the observation that at a dosage
+level of 2.0, it appears that it may not make a difference which delivery method was used.
+
+Of course, our suspicions should be validated with some statistical analysis, which we will now perform.
+
+##Statistical Analysis
+For all of our statistical analysis we will make the assumption that our data is iid and normally
+distributed.  Since we have a small sample size, 60, we will use Students T tests during our analysis.
+
+First, we will consider the possibility that delivering the vitamin C via OJ yields longer cells than
+delivering via VC.  We let our null hypothesis be that there is no significant difference, and let the
+alternative hypothesis be that mean length is greater via OJ than with VC.
+
+```{r, echo = FALSE}
+length.vc = ToothGrowth[ToothGrowth$supp == 'VC',]$len
+length.oj = ToothGrowth[ToothGrowth$supp == 'OJ',]$len
+```
+```{r}
+result <- t.test(length.oj, length.vc, alternative = 'greater')
+result$conf.int
+result$p.value
+```
+
+We can see that the p-value for our above test is approximately 0.03 and is less than a significance level
+of 0.05.
+
+Next, we will consider the possibility that increasing dosages of vitamin C yield longer cells.  Here
+we will have to make a few different comparisons.  In particular, we will look at difference is cell length
+between dosages of 0.5 and 1.0, and 1.0 and 2.0.  In each case, the null hypothesis is that
+there is no difference in mean cell length and the alternative is that the higher dose has a significantly
+greater mean cell length. 
+
+```{r, echo = FALSE}
+length.0.5 = ToothGrowth[ToothGrowth$dose == 0.5,]$len
+length.1.0 = ToothGrowth[ToothGrowth$dose == 1.0,]$len
+length.2.0 = ToothGrowth[ToothGrowth$dose == 2.0,]$len
+```
+
+```{r}
+# 0.5 vs 1.0
+result <- t.test(length.1.0, length.0.5, alternative = 'greater')
+result$conf.int
+format(result$p.value, scientific = FALSE)
+```
+We can see that the p-value of this test is much smaller than a significance level of 0.05.
+
+
+```{r}
+# 1.0 vs 2.0
+result <- t.test(length.2.0, length.1.0, alternative = 'greater')
+result$conf.int
+format(result$p.value, scientific = FALSE)
+```
+The same can be said of this p-value.
+
+#Conclusions
+
+In all of our tests, the p-values we obtained indicate that we can safely reject the null hypothesis
+and accept the alternative.  This is of course conditioned on our assumptions of iid and normally distributed
+data.  Thus, we can make the following conclusions.  
+
+1. Delivering vitamin C to guinea pigs via orange juice leads to longer odontoblast cell length.
+2. Increasing dosages from 0.5 to 1.0 and from 1.0 to 2.0 leads to longer odontoblast cell length.
+
+A possible limitation of this analysis are that the beginning length of the cells was not available.
+This could mean that each guinea pig began the study with different cell lengths which would pollute the
+final cell length observation unless accounted for.
